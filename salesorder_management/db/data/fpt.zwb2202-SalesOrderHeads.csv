@@ -1,2 +1,2 @@
 SOrderNumber;CCode;GrossAmount;NetAmount;TaxAmount;OverallStatus;Note;PaymentMethod;
-1000000010;USD;1000;950;50;N;Some note for sales order 10;;
+1000000010;USD;1000;950;50;N;Some note for sales order 10; ;
