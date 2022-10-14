@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="SalesOrderService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="SalesOrder" EntityType="SalesOrderService.SalesOrder">
+                    <NavigationPropertyBinding Path="OverallStatus_asso" Target="CodeMaster"/>
+                    <NavigationPropertyBinding Path="PaymentMethod_asso" Target="CodeMaster"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="SalesOrder"/>
+                </EntitySet>
+                <EntitySet Name="CodeMaster" EntityType="SalesOrderService.CodeMaster"/>
+            </EntityContainer>
+            <EntityType Name="SalesOrder">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="SOrderNumber"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="SOrderNumber" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="CCode" Type="Edm.String" MaxLength="5"/>
+                <Property Name="GrossAmount" Type="Edm.Decimal" Scale="2" Precision="15"/>
+                <Property Name="NetAmount" Type="Edm.Decimal" Scale="2" Precision="15"/>
+                <Property Name="TaxAmount" Type="Edm.Decimal" Scale="2" Precision="15"/>
+                <Property Name="OverallStatus" Type="Edm.String" MaxLength="1"/>
+                <Property Name="Note" Type="Edm.String" MaxLength="80"/>
+                <Property Name="PaymentMethod" Type="Edm.String" MaxLength="1"/>
+                <NavigationProperty Name="OverallStatus_asso" Type="SalesOrderService.CodeMaster">
+                    <ReferentialConstraint Property="OverallStatus" ReferencedProperty="Value"/>
+                </NavigationProperty>
+                <NavigationProperty Name="PaymentMethod_asso" Type="SalesOrderService.CodeMaster">
+                    <ReferentialConstraint Property="PaymentMethod" ReferencedProperty="Value"/>
+                </NavigationProperty>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="SalesOrderService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="SalesOrderService.SalesOrder"/>
+            </EntityType>
+            <EntityType Name="CodeMaster">
+                <Key>
+                    <PropertyRef Name="CD1"/>
+                    <PropertyRef Name="Value"/>
+                </Key>
+                <Property Name="CD1" Type="Edm.String" MaxLength="4" Nullable="false"/>
+                <Property Name="Value" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="Text" Type="Edm.String" MaxLength="50"/>
+            </EntityType>
+            <EntityType Name="DraftAdministrativeData">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+            </EntityType>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="SalesOrderService.SalesOrder"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="SalesOrderService.SalesOrder"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="SalesOrderService.SalesOrder"/>
+                <ReturnType Type="SalesOrderService.SalesOrder"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="SalesOrderService.SalesOrder"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="SalesOrderService.SalesOrder"/>
+            </Action>
+            <Annotations Target="SalesOrderService.EntityContainer/SalesOrder">
+                <Annotation Term="Common.DraftRoot">
+                    <Record Type="Common.DraftRootType">
+                        <PropertyValue Property="ActivationAction" String="SalesOrderService.draftActivate"/>
+                        <PropertyValue Property="EditAction" String="SalesOrderService.draftEdit"/>
+                        <PropertyValue Property="PreparationAction" String="SalesOrderService.draftPrepare"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SalesOrderService.SalesOrder/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="SalesOrderService.SalesOrder/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="SalesOrderService.SalesOrder/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="SalesOrderService.SalesOrder/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/SOrderNumber">
+                                        <Annotation Term="Common.Label" String="Sales Order Number"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/CCode">
+                                        <Annotation Term="Common.Label" String="Currency Code"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/GrossAmount">
+                                        <Annotation Term="Common.Label" String="Total Gross Amount"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/NetAmount">
+                                        <Annotation Term="Common.Label" String="Total Net Amount"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/TaxAmount">
+                                        <Annotation Term="Common.Label" String="Total Tax Amount"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/OverallStatus">
+                                        <Annotation Term="Common.Label" String="Overall Status"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/Note">
+                                        <Annotation Term="Common.Label" String="Note"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/PaymentMethod">
+                                        <Annotation Term="Common.Label" String="Payment Method"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/IsActiveEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/HasActiveEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/HasDraftEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.SalesOrder/DraftAdministrativeData">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.CodeMaster/CD1">
+                                        <Annotation Term="Common.Label" String="CD1"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.CodeMaster/Value">
+                                        <Annotation Term="Common.Label" String="Value"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.CodeMaster/Text">
+                                        <Annotation Term="Common.Label" String="Text"/>
+                                    </Annotations>
+                                    <Annotations Target="SalesOrderService.DraftAdministrativeData">
+                                        <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                                        </Annotations>
+                                        <Annotations Target="SalesOrderService.DraftAdministrativeData/DraftUUID">
+                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                                            </Annotations>
+                                            <Annotations Target="SalesOrderService.DraftAdministrativeData/CreationDateTime">
+                                                <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                                                </Annotations>
+                                                <Annotations Target="SalesOrderService.DraftAdministrativeData/CreatedByUser">
+                                                    <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="SalesOrderService.DraftAdministrativeData/DraftIsCreatedByMe">
+                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                                        </Annotations>
+                                                        <Annotations Target="SalesOrderService.DraftAdministrativeData/LastChangeDateTime">
+                                                            <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="SalesOrderService.DraftAdministrativeData/LastChangedByUser">
+                                                                <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                                                </Annotations>
+                                                                <Annotations Target="SalesOrderService.DraftAdministrativeData/InProcessByUser">
+                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="SalesOrderService.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                                        </Annotations>
+                                                                    </Schema>
+                                                                </edmx:DataServices>
+                                                            </edmx:Edmx>
