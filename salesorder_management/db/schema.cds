@@ -16,6 +16,8 @@ entity SalesOrderHeads : cuid, managed {
         Note                 : String(80)        @title : 'Note';
         PaymentMethod        : String(1)         @title : 'Payment Method';
         
+        virtual Criticality  : Integer;         // virtual field will not reflect in Database
+        
         OverallStatus_asso   : Association to CodeMaster 
                                             on OverallStatus_asso.CD1 = 'Z001'
                                             and OverallStatus_asso.Value = $self.OverallStatus;

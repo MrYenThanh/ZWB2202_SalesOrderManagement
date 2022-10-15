@@ -47,7 +47,8 @@ annotate service.SalesOrder with @(
         {
             $Type : 'UI.DataField',
             Value : OverallStatus,
-            ![@HTML5.CssDefaults] : {width : '10rem'}, // Column width
+            Criticality : Criticality,
+            ![@HTML5.CssDefaults] : {width : '10rem'},
         },
         {
             $Type : 'UI.DataField',
@@ -85,6 +86,7 @@ annotate service.SalesOrder with @(
             {
                 $Type : 'UI.DataField',
                 Value : OverallStatus,
+                Criticality : Criticality,
             },
             {
                 $Type : 'UI.DataField',
