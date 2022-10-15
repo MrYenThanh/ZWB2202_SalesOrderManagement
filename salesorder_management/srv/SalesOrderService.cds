@@ -6,4 +6,7 @@ service SalesOrderService {
     annotate SalesOrder with @odata.draft.enabled;
     
     entity CodeMaster as projection on db.CodeMaster;
+
+    @readonly
+    entity BusinessPartners as projection on db.BusinessPartners;
 }
