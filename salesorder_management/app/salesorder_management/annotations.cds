@@ -17,32 +17,32 @@ annotate service.SalesOrder with @(
         {
             $Type : 'UI.DataField',
             Value : SOrderNumber,
-            ![@HTML5.CssDefaults] : {width : '15rem'},
+            ![@HTML5.CssDefaults] : {width : '12rem'}, // Column width
         },
         {
             $Type : 'UI.DataField',
             Value : CCode,
-            ![@HTML5.CssDefaults] : {width : '15rem'},
+            ![@HTML5.CssDefaults] : {width : '10rem'}, // Column width
         },
         {
             $Type : 'UI.DataField',
             Value : GrossAmount,
-            ![@HTML5.CssDefaults] : {width : '15rem'},
+            ![@HTML5.CssDefaults] : {width : '12rem'}, // Column width
         },
         {
             $Type : 'UI.DataField',
             Value : NetAmount,
-            ![@HTML5.CssDefaults] : {width : '15rem'},
+            ![@HTML5.CssDefaults] : {width : '12rem'}, // Column width
         },
         {
             $Type : 'UI.DataField',
             Value : TaxAmount,
-            ![@HTML5.CssDefaults] : {width : '15rem'},
+            ![@HTML5.CssDefaults] : {width : '10rem'}, // Column width
         },
         {
             $Type : 'UI.DataField',
             Value : Note,
-            ![@HTML5.CssDefaults] : {width : '15rem'},
+            ![@HTML5.CssDefaults] : {width : '15rem'}, // Column width
         },
         {
             $Type : 'UI.DataField',
@@ -53,7 +53,7 @@ annotate service.SalesOrder with @(
         {
             $Type : 'UI.DataField',
             Value : PaymentMethod,
-            ![@HTML5.CssDefaults] : {width : '10rem'},
+            ![@HTML5.CssDefaults] : {width : '10rem'}, // Column width
         }
     ]
 );
@@ -107,3 +107,33 @@ annotate service.SalesOrder with @(
         },
     ]
 );
+
+// Value Help for field SO Status
+// And set Status to show Text instead of Code
+annotate service.SalesOrder with {
+    OverallStatus @(Common : {
+        //show text, not id for mitigation in the context of risks
+        Text            : OverallStatus_asso.Text,
+        TextArrangement : #TextFirst, // Show text in format: Text(Code)
+//      Value Help for field SO Status
+        ValueList       : {
+            Label          : 'Overall Status',
+            CollectionPath : 'CodeMaster',
+            Parameters     : [
+                {
+                    $Type             : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : OverallStatus,
+                    ValueListProperty : 'Value'
+                },{
+                    $Type : 'Common.ValueListParameterConstant',
+                    Constant : 'Z001',
+                    ValueListProperty : 'CD1',
+                },
+                {
+                    $Type             : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'Text'
+                }
+            ]
+        }
+    });
+}
