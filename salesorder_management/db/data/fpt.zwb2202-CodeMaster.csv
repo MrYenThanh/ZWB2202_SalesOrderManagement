@@ -1,7 +1,7 @@
 CD1;Value;Text;
 Z001;N;New;
 Z001;I;In Progress;
-Z001;X;Canceled;
+Z001;C;Canceled;
 Z001;D;Delivered;
 Z001;P;Paid;
 Z002; ;Bank Transfer;
