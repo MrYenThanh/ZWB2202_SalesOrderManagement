@@ -7,7 +7,7 @@ using {
 } from '@sap/cds/common';
 
 entity SalesOrderHeads : cuid, managed {
-    key SOrderNumber         : String(10)        @title : 'Sales Order Number';
+        SOrderNumber         : String(10)        @title : 'Sales Order Number';
         CCode                : String(5)         @title : 'Currency Code';
         GrossAmount          : Decimal(15, 2)    @title : 'Total Gross Amount';
         NetAmount            : Decimal(15, 2)    @title : 'Total Net Amount';
