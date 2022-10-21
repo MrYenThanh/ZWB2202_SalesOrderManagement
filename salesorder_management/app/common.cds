@@ -12,3 +12,10 @@ annotate db.SalesOrderHeads with {
 annotate db.CodeMaster with {
     CD1 @(UI.Hidden);
 }
+
+// Annotate Sales Order
+annotate db.BusinessPartners with {
+    BusinessPartner @title : 'Business Partner';
+    LastName        @title : 'Last Name';
+    FirstName       @title : 'First Name';
+}

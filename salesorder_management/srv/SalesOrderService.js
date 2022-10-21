@@ -46,4 +46,56 @@ module.exports = cds.service.impl(async function () {
          },
       });
    });
+
+   /**
+    * Event-handler on SalesOrder.
+    * Retrieve BusinessPartner data from the external API
+    */
+    this.on("READ", SalesOrder, async (req, next) => {
+      /*
+            Check whether the request wants an "expand" of the business partner
+            As this is not possible, the SalesOrder entity and the business partner entity are in different systems (SAP BTP and S/4 HANA Cloud),
+            if there is such an expand, remove it
+            */
+
+      if (!req.query.SELECT.columns) return next();
+
+      const expandIndex = req.query.SELECT.columns.findIndex(
+         ({ expand, ref }) => expand && ref[0] === "Buyer"
+      );
+      console.log(req.query.SELECT.columns);
+      if (expandIndex < 0) return next();
+
+      req.query.SELECT.columns.splice(expandIndex, 1);
+      if (
+         !req.query.SELECT.columns.find((column) =>
+            column.ref.find((ref) => ref == "Buyer_BusinessPartner")
+         )
+      ) {
+         req.query.SELECT.columns.push({ ref: ["Buyer_BusinessPartner"] });
+      }
+
+      /*
+            Instead of carrying out the expand, issue a separate request for each business partner
+            This code could be optimized, instead of having n requests for n business partners, just one bulk request could be created
+            */
+      try {
+         res = await next();
+         res = Array.isArray(res) ? res : [res];
+
+         await Promise.all(
+            res.map(async (salesOrder) => {
+               const buyer = await BPsrv.transaction(req).send({
+                  query: SELECT.one(this.entities.BusinessPartners)
+                     .where({ BusinessPartner: salesOrder.Buyer_BusinessPartner })
+                     .columns(["BusinessPartner", "LastName", "FirstName"]),
+                  headers: {
+                     apikey: process.env.apikey,
+                  },
+               });
+               salesOrder.Buyer = buyer;
+            })
+         );
+      } catch (error) {}
+   });
 });

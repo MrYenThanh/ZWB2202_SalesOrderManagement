@@ -11,7 +11,7 @@ annotate service.SalesOrder with @(
         Description    : {Value : Note}
     },
     // Filter Bar
-    UI.SelectionFields : [SOrderNumber, CCode, OverallStatus],
+    UI.SelectionFields : [SOrderNumber, CCode, OverallStatus, Buyer_BusinessPartner],
     // Main Table
     UI.LineItem : [
         {
@@ -23,6 +23,11 @@ annotate service.SalesOrder with @(
             $Type : 'UI.DataField',
             Value : CCode,
             ![@HTML5.CssDefaults] : {width : '10rem'}, // Column width
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : Buyer_BusinessPartner,
+            ![@HTML5.CssDefaults] : {width : '12rem'}, // Column width
         },
         {
             $Type : 'UI.DataField',
@@ -73,6 +78,10 @@ annotate service.SalesOrder with @(
             },
             {
                 $Type : 'UI.DataField',
+                Value : Buyer_BusinessPartner,
+            },
+            {
+                $Type : 'UI.DataField',
                 Value : GrossAmount,
             },
             {
@@ -112,10 +121,10 @@ annotate service.SalesOrder with @(
 // And set Status to show Text instead of Code
 annotate service.SalesOrder with {
     OverallStatus @(Common : {
-        //show text, not id for mitigation in the context of risks
+        // show text, not OverallStatus Key but OverallStatus Name
         Text            : OverallStatus_asso.Text,
         TextArrangement : #TextFirst, // Show text in format: Text(Code)
-//      Value Help for field SO Status
+        // Value Help for field SO Status
         ValueList       : {
             Label          : 'Overall Status',
             CollectionPath : 'CodeMaster',
@@ -136,4 +145,30 @@ annotate service.SalesOrder with {
             ]
         }
     });
+
+    
+    Buyer @(Common : {
+        Text            : Buyer.LastName,
+        TextArrangement : #TextLast,
+        // Value Help for field SO Status
+        ValueList       : {
+            Label          : 'Business Partners',
+            CollectionPath : 'BusinessPartners',
+            Parameters     : [
+                {
+                    $Type             : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : Buyer_BusinessPartner,
+                    ValueListProperty : 'BusinessPartner'
+                },
+                {
+                    $Type             : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'LastName'
+                },
+                {
+                    $Type             : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'FirstName'
+                }
+            ]
+        }
+    })
 }
