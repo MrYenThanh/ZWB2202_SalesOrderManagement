@@ -1,1 +1,27 @@
-{}
+{
+    "[development]": {
+      "auth": {
+        "passport": {
+          "strategy": "mock",
+          "users": {
+            "sales.viewer@tester.fpt": {
+              "password": "123456",
+              "ID": "salesviewer",
+              "userAttributes": {
+                "email": "sales.viewer@tester.fpt"
+              },
+              "roles": ["SalesViewer"]
+            },
+            "sales.manager@tester.fpt": {
+              "password": "123456",
+              "ID": "salesmanager",
+              "userAttributes": {
+                "email": "sales.manager@tester.fpt"
+              },
+              "roles": ["SalesManager"]
+            }
+          }
+        }
+      }
+    }
+  }
