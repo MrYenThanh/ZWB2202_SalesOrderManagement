@@ -1,5 +1,5 @@
-SOrderNumber;CCode;GrossAmount;NetAmount;TaxAmount;OverallStatus;Note;PaymentMethod;
-1000000010;USD;1000;950;50;N;Some note for sales order 10; ;
-1000000020;USD;770;700;70;I;Content for sales order 20;C;
-1000000030;USD;2250;2000;250;D;Sales order 20 was delivered;L;
-1000000110;USD;5290;4990;300;C;Sales order 110 was canceled;D;
+SOrderNumber;CCode;GrossAmount;NetAmount;TaxAmount;OverallStatus;Note;PaymentMethod;Buyer_BusinessPartner;
+1000000010;USD;1000;950;50;N;Some note for sales order 10; ;1000127;
+1000000020;USD;770;700;70;I;Content for sales order 20;C;1000211;
+1000000030;USD;2250;2000;250;D;Sales order 20 was delivered;L;1000230;
+1000000110;USD;5290;4990;300;C;Sales order 110 was canceled;D;1000231;
