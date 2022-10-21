@@ -1,5 +1,5 @@
-SOrderNumber;CCode;GrossAmount;NetAmount;TaxAmount;OverallStatus;Note;PaymentMethod;Buyer_BusinessPartner;
-1000000010;USD;1000;950;50;N;Some note for sales order 10; ;1000127;
-1000000020;USD;770;700;70;I;Content for sales order 20;C;1000211;
-1000000030;USD;2250;2000;250;D;Sales order 20 was delivered;L;1000230;
-1000000110;USD;5290;4990;300;C;Sales order 110 was canceled;D;1000231;
+ID;SOrderNumber;CCode;GrossAmount;NetAmount;TaxAmount;OverallStatus;Note;PaymentMethod;Buyer_BusinessPartner;
+fab5ee02-b441-4000-b18d-28b41ac4f80f;1000000010;USD;1000;950;50;N;Some note for sales order 10; ;1000127;
+c8b1ede6-c391-426b-8a31-215e05980459;1000000020;USD;770;700;70;I;Content for sales order 20;C;1000211;
+5c65fb58-3a33-4462-ae14-bad4552df349;1000000030;USD;2250;2000;250;D;Sales order 20 was delivered;L;1000230;
+c079579e-45c6-419a-8d69-e001a63ccb44;1000000110;USD;5290;4990;300;C;Sales order 110 was canceled;D;1000231;
