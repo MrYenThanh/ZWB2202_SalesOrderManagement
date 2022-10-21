@@ -4,6 +4,8 @@ _out
 connection.properties
 default-*.json
 .cdsrc-private.json
+.env
+package-lock.json
 gen/
 node_modules/
 target/
