@@ -1,0 +1,22 @@
+{
+    "welcomeFile": "/app/salesorder_management/webapp/index.html",
+    "authenticationMethod": "route",
+    "sessionTimeout": 30,
+    "logout": {
+      "logoutEndpoint": "/do/logout",
+      "logoutPage": "/"
+    },
+    "routes": [
+      {
+        "source": "^/app/(.*)$",
+        "target": "$1",
+        "localDir": "resources",
+        "authenticationType": "xsuaa"
+      },
+      {
+        "source": "^/(.*)$",
+        "destination": "srv-binding",
+        "authenticationType": "xsuaa"
+      }
+    ]
+}

@@ -9,6 +9,7 @@ package-lock.json
 gen/
 node_modules/
 target/
+approuter/resources/
 
 # Web IDE, App Studio
 .che/

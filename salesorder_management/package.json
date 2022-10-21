@@ -68,11 +68,14 @@
                 "kind": "sql"
             },
             "xsuaa": {
-               "kind": "xsuaa"
+                "kind": "xsuaa"
+            },
+            "auth": {
+                "kind": "jwt-auth"
             }
         },
         "hana": {
-           "deploy-format": "hdbtable"
+            "deploy-format": "hdbtable"
         }
     }
 }

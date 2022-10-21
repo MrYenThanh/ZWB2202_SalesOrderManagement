@@ -26,6 +26,7 @@ modules:
     # Resources extracted from CAP configuration
     - name: salesorder_management-db
     - name: salesorder_management-xsuaa
+    - name: salesorder_management-destination-service
    provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
@@ -43,6 +44,34 @@ modules:
     - name: salesorder_management-db
     - name: salesorder_management-xsuaa
 
+# --------------------  APPROUTER -----------------------------
+ - name: salesorder_management-approuter
+# ------------------------------------------------------------
+   type: nodejs
+   path: approuter
+   requires:
+     - name: salesorder_management-xsuaa
+     - name: srv-api
+       group: destinations
+       properties:
+         forwardAuthToken: true
+         strictSSL: true
+         name: srv-binding
+         url: "~{srv-url}"
+   build-parameters:
+     requires:
+       - name: salesorder_management-app
+         artifacts:
+           - ./*
+         target-path: resources
+
+# ------------------- UI ------------------------
+ - name: salesorder_management-app
+# ------------------------------------------------------------
+   type: html5
+   path: app
+   build-parameters:
+     supported-platforms: []
 
 resources:
  # services extracted from CAP configuration
@@ -64,8 +93,22 @@ resources:
      service: xsuaa
      service-plan: application  
      path: ./xs-security.json
-    #  config:
-    #    xsappname: salesorder_management-${space}    #  name + space dependency
-    #    tenant-mode: dedicated
-
+     config:
+       xsappname: sales-order-manage-dev
+       role-collections:
+        - name: 'SalesManager-${space}'
+          description: Manage Sales
+          role-template-references:
+          - $XSAPPNAME.SalesManager
+        - name: 'SalesViewer-${space}'
+          description: View Sales
+          role-template-references:
+          - $XSAPPNAME.SalesViewer
+# ------------------------------------------------------------
+ - name: salesorder_management-destination-service
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service: destination
+     service-plan: lite
 
