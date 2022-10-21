@@ -7,6 +7,8 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^6",
+    "@sap/cds-dk" : "^6",
+    "@sap-cloud-sdk/odata-v2": "^2.9.0",
     "express": "^4"
   },
   "devDependencies": {
@@ -47,5 +49,16 @@
   },
   "sapux": [
     "app/salesorder_management"
-  ]
+  ],
+  "cds": {
+    "requires": {
+      "API_BUSINESS_PARTNER": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_BUSINESS_PARTNER",
+        "credentials": {
+            "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_BUSINESS_PARTNER/"
+        }
+      }
+    }
+  }
 }

@@ -25,11 +25,21 @@ entity SalesOrderHeads : cuid, managed {
         PaymentMethod_asso   : Association to CodeMaster 
                                             on PaymentMethod_asso.CD1 = 'Z002'
                                             and PaymentMethod_asso.Value = $self.PaymentMethod;
-        // Buyer
+        
+        Buyer                : Association to one BusinessPartners @title : 'Buyer';
 }
 
 entity CodeMaster {
     key CD1   : String(4)  @title : 'CD1';
     key Value : String(10) @title : 'Value';
         Text  : String(50) @title : 'Text';
+}
+
+// using an external service from S/4
+using {  API_BUSINESS_PARTNER as external } from '../srv/external/API_BUSINESS_PARTNER.csn';
+
+entity BusinessPartners as projection on external.A_BusinessPartner {
+    key BusinessPartner,
+    LastName,
+    FirstName
 }
