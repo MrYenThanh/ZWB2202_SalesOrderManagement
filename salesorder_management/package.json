@@ -8,6 +8,8 @@
     "dependencies": {
         "@sap/cds": "^6",
         "@sap/cds-dk": "^6",
+        "@sap/xsenv": "^3.2",
+        "@sap/xssec": "^3.2",
         "@sap-cloud-sdk/odata-v2": "^2.9.0",
         "express": "^4",
         "hdb": "^0.19",
